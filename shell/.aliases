@@ -1,0 +1,38 @@
+# Fast open
+alias o="open ."
+
+# Edit .dotfiles
+alias dot="code $HOME/.dotfiles"
+
+# Reload shell
+alias reload="source ~/.zshrc"
+
+# Enable aliases to be sudo’ed
+alias sudo='sudo '
+
+# IP addresses
+alias ip="curl ifconfig.me/ip ; echo"
+
+# List all files colorized in long format
+alias l="ls -laF"
+
+# Copy SSH key
+alias sshkey='xclip -sel clip < ~/.ssh/id_rsa.pub'
+
+# Go to projects directory
+alias proj='cd $HOME/Documents/Projects'
+
+# AFK
+alias afk='keep-presence -s 15'
+
+# Git
+alias nuke="git clean -df && git reset --hard"
+alias commit="git add . && git commit -m"
+alias wip="commit wip"
+alias pull="git pull"
+alias push="git push"
+alias gl="git log --oneline --decorate --color"
+alias unstage="git restore --staged ."
+
+# Shell
+# alias exec='sudo chmod +x '

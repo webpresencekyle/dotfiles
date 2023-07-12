@@ -1,0 +1,36 @@
+# Create a new directory and enter it
+function mkd() {
+   mkdir -p "$@" && cd "$@"
+}
+
+# Create a new project directory and init
+newproj() {
+  local name="$1"
+  local directory="$HOME/Documents/Projects/${name//-/_}"
+  local lando_file="$directory/.lando.yml"
+  local todo_file="$directory/web.todo"
+
+  if [ ! -d "$directory" ]; then
+    mkdir "$directory"
+    touch $lando_file
+      echo "name: $name" >> $lando_file
+      echo "recipe: wordpress" >> $lando_file
+      echo "config:" >> $lando_file
+      echo "  webroot: web" >> $lando_file
+      echo "  php: 8.1" >> $lando_file
+    touch $todo_file
+      echo "$name" >> $todo_file
+      echo "" >> $todo_file
+      echo "General:" >> $todo_file
+    mkdir "$directory/web"
+    mkdir "$directory/databases"
+    mkdir "$directory/databases/in"
+    mkdir "$directory/databases/out"
+    mkdir "$directory/transfer"
+    echo "Directory '$directory' created successfully."
+    code $directory
+    cd $directory
+  else
+    echo "Directory '$directory' already exists."
+  fi
+}
