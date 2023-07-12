@@ -3,6 +3,41 @@ function mkd() {
    mkdir -p "$@" && cd "$@"
 }
 
+# Open a projects container in VSC
+openvsc() {
+  # Call the command and capture the output
+  json_string=$(lando list --format json)
+
+  # Print the results: index and name
+  index=0
+  names=()
+  while IFS= read -r name; do
+    index=$((index + 1))
+    names+=("$name")
+    echo "[$index] $name"
+  done <<< "$(echo "$json_string" | jq -r '.[] | select(.service == "appserver") | .name')"
+
+  # Read the index input
+  read -p "Enter the index: " index_input
+
+  # Validate the index input
+  if ! [[ "$index_input" =~ ^[0-9]+$ ]]; then
+    echo "Invalid index. Please provide a valid numeric index."
+    exit 1
+  fi
+
+  # Check if the index is within the valid range
+  if ((index_input < 1 || index_input > ${#names[@]})); then
+    echo "Invalid index. Please provide an index within the valid range."
+    exit 1
+  fi
+
+  # Get the name based on the index input
+  selected_name="${names[index_input - 1]}"
+  code --folder-uri vscode-remote://attached-container+$(printf $selected_name | xxd -p)/app
+
+}
+
 # Create a new project directory and init
 newproj() {
   local name="$1"
